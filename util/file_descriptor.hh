@@ -34,7 +34,7 @@ class FileDescriptor
     // An FDWrapper cannot be copied or moved
     FDWrapper( const FDWrapper& other ) = delete;
     FDWrapper& operator=( const FDWrapper& other ) = delete;
-    FDWrapper( FDWrapper&& other ) = delete;              // move construction is forbidden
+    FDWrapper( FDWrapper&& other ) = delete; // move construction is forbidden
     FDWrapper& operator=( FDWrapper&& other ) = delete;
   };
 

@@ -15,7 +15,7 @@ using namespace std;
 
 /**
  * Checks the return value of a system call and handles errors accordingly.
- * 
+ *
  * @tparam T The type of the return value.
  * @param s_attempt A string describing the attempted system call.
  * @param return_value The return value of the system call.
@@ -172,7 +172,7 @@ size_t FileDescriptor::write( string_view buffer )
 size_t FileDescriptor::write( const vector<std::string>& buffers )
 {
   vector<string_view> views;
-  views.reserve( buffers.size() );   // 分配空间，不是逆转
+  views.reserve( buffers.size() ); // 分配空间，不是逆转
   for ( const auto& x : buffers ) {
     views.push_back( x );
   }
