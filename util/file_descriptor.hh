@@ -6,6 +6,7 @@
 #include <vector>
 
 // A reference-counted handle to a file descriptor
+// 描述一个文件描述符被多少个进程或线程使用的 计数器
 class FileDescriptor
 {
   // FDWrapper: A handle on a kernel file descriptor.
@@ -18,7 +19,7 @@ class FileDescriptor
     bool closed_ = false;       // Flag indicating whether FDWrapper::fd_ has been closed
     bool non_blocking_ = false; // Flag indicating whether FDWrapper::fd_ is non-blocking
     unsigned read_count_ = 0;   // The number of times FDWrapper::fd_ has been read
-    unsigned write_count_ = 0;  // The numberof times FDWrapper::fd_ has been written
+    unsigned write_count_ = 0;  // The number of times FDWrapper::fd_ has been written
 
     // Construct from a file descriptor number returned by the kernel
     explicit FDWrapper( int fd );
@@ -33,7 +34,7 @@ class FileDescriptor
     // An FDWrapper cannot be copied or moved
     FDWrapper( const FDWrapper& other ) = delete;
     FDWrapper& operator=( const FDWrapper& other ) = delete;
-    FDWrapper( FDWrapper&& other ) = delete;
+    FDWrapper( FDWrapper&& other ) = delete;              // move construction is forbidden
     FDWrapper& operator=( FDWrapper&& other ) = delete;
   };
 
@@ -45,6 +46,7 @@ class FileDescriptor
 
 protected:
   // size of buffer to allocate for read()
+  // static 静态变量；constexpr 编译时计算；size_t 无符号整数类型，专用于存储对象的大小
   static constexpr size_t kReadBufferSize = 16384;
 
   void set_eof() { internal_fd_->eof_ = true; }

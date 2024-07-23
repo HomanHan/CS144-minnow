@@ -13,6 +13,14 @@
 
 using namespace std;
 
+/**
+ * Checks the return value of a system call and handles errors accordingly.
+ * 
+ * @tparam T The type of the return value.
+ * @param s_attempt A string describing the attempted system call.
+ * @param return_value The return value of the system call.
+ * @return The return value if it is greater than or equal to 0, otherwise throws a unix_error.
+ */
 template<typename T>
 T FileDescriptor::FDWrapper::CheckSystemCall( string_view s_attempt, T return_value ) const
 {
@@ -20,6 +28,9 @@ T FileDescriptor::FDWrapper::CheckSystemCall( string_view s_attempt, T return_va
     return return_value;
   }
 
+  // non_blocking_ is true if the file descriptor is in non-blocking mode
+  // EAGAIN means that there is no data available.
+  // EINPROGRESS means that the operation is in progress.
   if ( non_blocking_ and ( errno == EAGAIN or errno == EINPROGRESS ) ) {
     return 0;
   }
@@ -43,6 +54,9 @@ FileDescriptor::FDWrapper::FDWrapper( int fd ) : fd_( fd )
     throw runtime_error( "invalid fd number:" + to_string( fd ) );
   }
 
+  /**
+   * 调用fcntl函数来获取文件描述符fd的当前状态标志
+   */
   const int flags = CheckSystemCall( "fcntl", fcntl( fd, F_GETFL ) ); // NOLINT(*-vararg)
   non_blocking_ = flags & O_NONBLOCK;                                 // NOLINT(*-bitwise)
 }
@@ -158,7 +172,7 @@ size_t FileDescriptor::write( string_view buffer )
 size_t FileDescriptor::write( const vector<std::string>& buffers )
 {
   vector<string_view> views;
-  views.reserve( buffers.size() );
+  views.reserve( buffers.size() );   // 分配空间，不是逆转
   for ( const auto& x : buffers ) {
     views.push_back( x );
   }
