@@ -18,24 +18,33 @@ void get_URL( const string& host, const string& path )
   // Then you'll need to print out everything the server sends back,
   // (not just one call to read() -- everything) until you reach
   // the "eof" (end of file).
+
+  // 1. 创建socket对象
+  // 2. 使用host实例化Address对象
+  // 3. 使用Address对象连接socket
   TCPSocket socket;
   socket.connect( Address( host, "http" ) );
-  
-  string message;
-  message += "GET " + path + " HTTP/1.1\r\n";
-  message += "Host: " + host + "\r\n";
-  message += "Connection: close\r\n\r\n";
-  socket.write( message );
 
-  std::string buffers;
-  while ( !socket.eof() ) {
-    socket.read( buffers );
-    cout << buffers;
+  // 4. 构造HTTP请求
+  std::string request = "GET " + path + " HTTP/1.1\r\n";
+  request += "Host: " + host + "\r\n";
+  request += "Connection: close\r\n\r\n";
+
+  // 5. 发送HTTP请求
+  socket.write( request );
+
+  // 6. 读取并输出服务器响应，在EOF时停止
+  std::string response;
+  while ( socket.eof() == false ) {
+    socket.read( response );
+    cout << response;
   }
+
+  // 7. 关闭socket
   socket.close();
 
-/*   cerr << "Function called: get_URL(" << host << ", " << path << ").\n";
-  cerr << "Warning: get_URL() has not been implemented yet.\n"; */
+  /*   cerr << "Function called: get_URL(" << host << ", " << path << ").\n";
+    cerr << "Warning: get_URL() has not been implemented yet.\n"; */
 }
 
 int main( int argc, char* argv[] )
