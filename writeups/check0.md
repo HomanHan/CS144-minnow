@@ -133,3 +133,37 @@ Connection: close
 6. **关闭连接**
 
 `socket.close()`
+
+## 4. An in-memory reliable byte stream
+
+### 4.1 Result
+
+```shell
+Test project /home/homan/Downloads/CS144/workspace/CS144-minnow/build
+      Start  1: compile with bug-checkers
+ 1/10 Test  #1: compile with bug-checkers ........   Passed    0.14 sec
+      Start  2: t_webget
+ 2/10 Test  #2: t_webget .........................   Passed    1.08 sec
+      Start  3: byte_stream_basics
+ 3/10 Test  #3: byte_stream_basics ...............   Passed    0.01 sec
+      Start  4: byte_stream_capacity
+ 4/10 Test  #4: byte_stream_capacity .............   Passed    0.01 sec
+      Start  5: byte_stream_one_write
+ 5/10 Test  #5: byte_stream_one_write ............   Passed    0.01 sec
+      Start  6: byte_stream_two_writes
+ 6/10 Test  #6: byte_stream_two_writes ...........   Passed    0.01 sec
+      Start  7: byte_stream_many_writes
+ 7/10 Test  #7: byte_stream_many_writes ..........   Passed    0.03 sec
+      Start  8: byte_stream_stress_test
+ 8/10 Test  #8: byte_stream_stress_test ..........   Passed    0.01 sec
+      Start 37: compile with optimization
+ 9/10 Test #37: compile with optimization ........   Passed    0.08 sec
+      Start 38: byte_stream_speed_test
+             ByteStream throughput: 1.62 Gbit/s
+10/10 Test #38: byte_stream_speed_test ...........   Passed    0.11 sec
+
+100% tests passed, 0 tests failed out of 10
+
+Total Test time (real) =   1.49 sec
+Built target check0
+```
