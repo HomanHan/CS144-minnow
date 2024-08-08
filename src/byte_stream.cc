@@ -16,7 +16,8 @@ bool Writer::is_closed() const
 void Writer::push( string data )
 {
   // Your code here.
-  (void)data; // (void)data 并不会改变 data 的值或类型，它只是告诉编译器忽略 data 的类型
+  // (void)data; // (void)data 并不会改变 data 的值或类型，它只是告诉编译器忽略 data
+  // 的类型，即告诉编译器这个参数是故意未使用的。
   if ( is_closed() and data.size() > 0 ) {
     throw runtime_error( "pushed data after closed" );
     set_error();
@@ -71,7 +72,7 @@ string_view Reader::peek() const
 void Reader::pop( uint64_t len )
 {
   // Your code here.
-  (void)len;
+  // (void)len;
   if ( buffer_.empty() or len == 0 ) {
     return;
   }
