@@ -11,8 +11,8 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
     (void)is_last_substring; */
 
   if ( writer().is_closed() ) {
-    throw runtime_error( "inserted data after closed" );
-    output_.set_error();
+    // throw runtime_error( "inserted data after closed" );
+    return;
   } else if ( output_.has_error() ) {
     throw runtime_error( "Something went wrong in output_" );
   } else if ( first_index >= ( prev_index_ + writer().available_capacity() ) ) {
@@ -39,7 +39,8 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
   size_t pending_capacity = writer().available_capacity();
   uint64_t offset = first_index - prev_index_;
   // 此处的 i 直接指向 pending_data_ 的下标
-  for ( uint64_t i = first_index - prev_index_; i < pending_capacity and i < ( size_data + offset ); i++ ) {
+  uint64_t i = 0;
+  for ( i = first_index - prev_index_; i < pending_capacity and i < ( size_data + offset ); i++ ) {
     if ( pending_flag_[i] == true ) {
       continue;
     }
@@ -48,9 +49,13 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
     bytes_pending_++;
   }
 
+  if ( i >= pending_capacity ) {
+    _eof = false;
+  }
+
   // 从 pending_data_ 中取出数据写入 output_
   string out;
-  while ( pending_flag_[0] == true and !pending_data_.empty()) {
+  while ( pending_flag_[0] == true and !pending_data_.empty() ) {
     out += pending_data_.front();
     pending_data_.pop_front();
     pending_flag_.pop_front();

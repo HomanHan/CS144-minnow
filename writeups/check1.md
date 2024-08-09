@@ -32,3 +32,10 @@ Remaining Bugs:
 - Optional: I think you could make this lab better by: [describe]
 
 - Optional: I'm not sure about: [describe]
+
+## TO DO
+
+1. Make some comments for your code in `reassembler.cc/hh`.
+2. Explain your structure and design as the `check1.pdf` said.
+3. Optimize your code for a higher speed.
+4. your feelings and summary （所学到的知识总结，例如：deque/map/TCP）.
