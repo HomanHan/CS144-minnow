@@ -26,9 +26,10 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
 
   if ( _eof and bytes_pending_ == 0 and data.size() == 0 ) {
     output_.writer().close();
+    return;
   }
 
-  if ( first_index < prev_index_ and first_index + data.size() - 1 >= prev_index_ ) {
+  if ( first_index < prev_index_ and first_index + data.size() >= prev_index_ + 1 ) {
     data = data.substr( size_t( prev_index_ - first_index ) );
     first_index = prev_index_;
   }
@@ -49,7 +50,7 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
 
   // 从 pending_data_ 中取出数据写入 output_
   string out;
-  while ( pending_flag_[0] == true and !pending_data_.empty() and pending_data_.front() ) {
+  while ( pending_flag_[0] == true and !pending_data_.empty()) {
     out += pending_data_.front();
     pending_data_.pop_front();
     pending_flag_.pop_front();
@@ -65,7 +66,6 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
   if ( _eof and bytes_pending_ == 0 ) {
     output_.writer().close();
   }
-
   return;
 }
 
